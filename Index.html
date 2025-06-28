@@ -1,1 +1,175 @@
-<!-- Aquí va tu sitio web -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Balcón de Ely</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: 'Montserrat', sans-serif;
+      background-color: #fff8f0; color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #d62828, #f77f00);
+      color: white; text-align: center; padding: 25px 15px;
+    }
+    nav a {
+      margin: 0 10px; color: white;
+      text-decoration: none; font-weight: bold;
+    }
+    .section {
+      padding: 50px 20px; max-width: 1000px; margin: auto;
+    }
+    .section:nth-child(even) { background-color: #ffeccc; }
+    h2 {
+      color: #d62828;
+      margin-bottom: 25px; text-align: center;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: white; border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px; text-align: center;
+    }
+    .product img {
+      width: 100%; height: 180px; object-fit: cover; border-radius: 5px;
+    }
+    .product h3 { margin: 10px 0 5px; color: #d62828; }
+    .product p { margin: 0 0 10px; }
+    .product input {
+      width: 60px; padding: 5px; margin: 5px 0;
+    }
+    .product button {
+      background: #d62828; color: white;
+      border: none; padding: 8px 12px;
+      border-radius: 5px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>El Balcón de Ely</h1>
+  <nav>
+    <a href="#menu">Menú</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a href="#galeria">Galería</a>
+  </nav>
+</header>
+<section class="section" id="menu">
+  <h2>🍽️ Nuestro Menú</h2>
+  <div class="product-grid">
+    <div class="product">
+      <img src="img/pizza.jpg" alt="Pizza de Queso">
+      <h3>Pizza de Queso</h3>
+      <p>Precio: 180 CUP</p>
+      <input type="number" min="1" value="1" id="qty-pizza">
+      <button onclick="addToCart('Pizza de Queso', 180, 'qty-pizza')">Agregar</button>
+    </div>
+    <div class="product">
+      <img src="img/batido.jpg" alt="Batido de Mango">
+      <h3>Batido de Mango</h3>
+      <p>Precio: 60 CUP</p>
+      <input type="number" min="1" value="1" id="qty-batido">
+      <button onclick="addToCart('Batido de Mango', 60, 'qty-batido')">Agregar</button>
+    </div>
+    <div class="product">
+      <img src="img/cerveza.jpg" alt="Cerveza">
+      <h3>Cerveza</h3>
+      <p>Precio: 200 CUP</p>
+      <input type="number" min="1" value="1" id="qty-cerveza">
+      <button onclick="addToCart('Cerveza', 200, 'qty-cerveza')">Agregar</button>
+    </div>
+  </div>
+
+  <div class="section cart" id="cart">
+    <h3>🛒 Tu pedido</h3>
+    <ul id="cart-list"></ul>
+    <p><strong>Total:</strong> <span id="cart-total">0</span> CUP</p>
+    <button onclick="sendOrder()">Enviar por WhatsApp</button>
+  </div>
+</section>
+
+<section class="section" id="ubicacion">
+  <h2>📍 Ubicación</h2>
+  <p style="text-align:center;">
+    Calle San Pedro #218 A Altos,<br>entre San Miguel y Nazareno,<br>Santa Clara, Villa Clara, Cuba
+  </p>
+  <div class="map">
+    <iframe src="https://www.google.com/maps?q=Calle+San+Pedro+218,+Santa+Clara,+Cuba&output=embed" allowfullscreen loading="lazy"></iframe>
+  </div>
+</section>
+<section class="section" id="galeria">
+  <h2>📸 Nuestra Galería</h2>
+  <div class="gallery">
+    <a href="#img1"><img src="img/pizza.jpg" alt="Pizza"></a>
+    <a href="#img2"><img src="img/batido.jpg" alt="Batido"></a>
+    <a href="#img3"><img src="img/cerveza.jpg" alt="Cerveza"></a>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="img1" class="lightbox"><a href="#"><img src="img/pizza.jpg" alt=""></a></div>
+  <div id="img2" class="lightbox"><a href="#"><img src="img/batido.jpg" alt=""></a></div>
+  <div id="img3" class="lightbox"><a href="#"><img src="img/cerveza.jpg" alt=""></a></div>
+</section>
+
+<footer>
+  © 2025 El Balcón de Ely – Todos los derechos reservados.
+</footer>
+
+<script>
+  let cart = [];
+
+  function addToCart(nombre, precio, id) {
+    let cantidad = parseInt(document.getElementById(id).value);
+    if (!cantidad || cantidad <= 0) return;
+
+    let existente = cart.find(p => p.nombre === nombre);
+    if (existente) {
+      existente.cantidad += cantidad;
+    } else {
+      cart.push({ nombre, precio, cantidad });
+    }
+    actualizarCarrito();
+  }
+
+  function actualizarCarrito() {
+    const lista = document.getElementById("cart-list");
+    lista.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+      let li = document.createElement("li");
+      li.textContent = `${item.nombre} x${item.cantidad} – ${item.precio * item.cantidad} CUP`;
+      lista.appendChild(li);
+      total += item.precio * item.cantidad;
+    });
+
+    document.getElementById("cart-total").textContent = total;
+  }
+
+  function sendOrder() {
+    if (cart.length === 0) return alert("Tu carrito está vacío.");
+
+    let mensaje = "¡Hola! Quisiera hacer el siguiente pedido:%0A";
+    cart.forEach(item => {
+      mensaje += `- ${item.nombre} x${item.cantidad} (${item.precio * item.cantidad} CUP)%0A`;
+    });
+
+    let total = cart.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+    mensaje += `%0ATotal: ${total} CUP`;
+
+    const numero = "5354776437"; // Reemplaza por tu número si cambia
+    const url = `https://wa.me/${numero}?text=${mensaje}`;
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
