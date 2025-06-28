@@ -50,37 +50,72 @@
       border: none; padding: 8px 12px;
       border-radius: 5px; cursor: pointer;
     }
+    .header-con-imagen {
+  background: url("img/portada2.jpg") center center/cover no-repeat;
+  height: 280px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.header-con-imagen .overlay {
+  background-color: rgba(0,0,0,0.5); /* Capa oscura */
+  color: white;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.header-con-imagen h1 {
+  font-size: 2.5em;
+  margin: 0;
+  padding-top: 40px;
+}
+
+.header-con-imagen nav {
+  margin-top: 10px;
+}
+
+.header-con-imagen nav a {
+  margin: 0 10px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
-
-<header>
-  <h1>El Balcón de Ely</h1>
-  <nav>
-    <a href="#menu">Menú</a>
-    <a href="#ubicacion">Ubicación</a>
-    <a href="#galeria">Galería</a>
-  </nav>
+<header class="header-con-imagen">
+  <div class="overlay">
+    <h1>El Balcón de Ely</h1>
+    <nav>
+      <a href="#menu">Menú</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#galeria">Galería</a>
+    </nav>
+  </div>
 </header>
 <section class="section" id="menu">
   <h2>🍽️ Nuestro Menú</h2>
   <div class="product-grid">
     <div class="product">
-      <img src="img/pizza.jpg" alt="Pizza de Queso">
+      <img src="img/pizza.jpeg" alt="Pizza de Queso">
       <h3>Pizza de Queso</h3>
       <p>Precio: 180 CUP</p>
       <input type="number" min="1" value="1" id="qty-pizza">
       <button onclick="addToCart('Pizza de Queso', 180, 'qty-pizza')">Agregar</button>
     </div>
     <div class="product">
-      <img src="img/batido.jpg" alt="Batido de Mango">
+      <img src="img/batido.jpeg" alt="Batido de Mango">
       <h3>Batido de Mango</h3>
       <p>Precio: 60 CUP</p>
       <input type="number" min="1" value="1" id="qty-batido">
       <button onclick="addToCart('Batido de Mango', 60, 'qty-batido')">Agregar</button>
     </div>
     <div class="product">
-      <img src="img/cerveza.jpg" alt="Cerveza">
+      <img src="img/cerveza.jpeg" alt="Cerveza">
       <h3>Cerveza</h3>
       <p>Precio: 200 CUP</p>
       <input type="number" min="1" value="1" id="qty-cerveza">
@@ -108,15 +143,15 @@
 <section class="section" id="galeria">
   <h2>📸 Nuestra Galería</h2>
   <div class="gallery">
-    <a href="#img1"><img src="img/pizza.jpg" alt="Pizza"></a>
-    <a href="#img2"><img src="img/batido.jpg" alt="Batido"></a>
-    <a href="#img3"><img src="img/cerveza.jpg" alt="Cerveza"></a>
+    <a href="#img1"><img src="img/pizza.jpeg" alt="Pizza"></a>
+    <a href="#img2"><img src="img/batido.jpeg" alt="Batido"></a>
+    <a href="#img3"><img src="img/cerveza.jpeg" alt="Cerveza"></a>
   </div>
 
   <!-- Lightbox -->
-  <div id="img1" class="lightbox"><a href="#"><img src="img/pizza.jpg" alt=""></a></div>
-  <div id="img2" class="lightbox"><a href="#"><img src="img/batido.jpg" alt=""></a></div>
-  <div id="img3" class="lightbox"><a href="#"><img src="img/cerveza.jpg" alt=""></a></div>
+  <div id="img1" class="lightbox"><a href="#"><img src="img/pizza.jpeg" alt=""></a></div>
+  <div id="img2" class="lightbox"><a href="#"><img src="img/batido.jpeg" alt=""></a></div>
+  <div id="img3" class="lightbox"><a href="#"><img src="img/cerveza.jpeg" alt=""></a></div>
 </section>
 
 <footer>
