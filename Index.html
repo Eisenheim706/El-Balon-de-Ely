@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Balcón de Ely</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: 'Montserrat', sans-serif;
+      background-color: #fff8f0; color: #333;
+    }
+    .section { padding: 50px 20px; max-width: 1000px; margin: auto; }
+    .section:nth-child(even) { background-color: #ffeccc; }
+    h2 { color: #d62828; margin-bottom: 25px; text-align: center; }
+    header.header-con-imagen {
+      background: url("img/portada2.jpg") center center/cover no-repeat;
+      height: 280px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .header-con-imagen .overlay {
+      background-color: rgba(0,0,0,0.5);
+      color: white;
+      width: 100%; height: 100%; padding: 20px;
+    }
+    .header-con-imagen h1 {
+      font-size: 2.5em; margin: 0; padding-top: 40px;
+    }
+    .header-con-imagen nav {
+      margin-top: 10px;
+    }
+    .header-con-imagen nav a {
+      margin: 0 10px; color: #fff;
+      text-decoration: none; font-weight: bold;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: white; border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px; text-align: center;
+    }
+    .product img {
+      width: 100%; height: 180px;
+      object-fit: cover; border-radius: 5px;
+    }
+    .product h3 { margin: 10px 0 5px; color: #d62828; }
+    .product p { margin: 0 0 10px; }
+    .product input {
+      width: 60px; padding: 5px; margin: 5px 0;
+    }
+    .product button {
+      background: #d62828; color: white;
+      border: none; padding: 8px 12px;
+      border-radius: 5px; cursor: pointer;
+    }
+    .mapa iframe {
+      width: 100%;
+      height: 350px;
+      border: 0;
+      border-radius: 10px;
+    }
+    .boton-mapas {
+      display: inline-block;
+      background-color: #d62828;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .boton-mapas:hover {
+      background-color: #a31c1c;
+    }
+    .boton-whatsapp {
+      display: inline-block;
+      background-color: #25d366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+    .boton-whatsapp:hover {
+      background-color: #1ebe5d;
+    }
+    .boton-whatsapp img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header-con-imagen">
+  <div class="overlay">
+    <h1>El Balcón de Ely</h1>
+    <nav>
+      <a href="#menu">Menú</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#galeria">Galería</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section" id="menu">
+  <h2>🍽️ Nuestro Menú</h2>
+  <div class="product-grid">
+    <div class="product">
+      <img src="img/pizza.jpeg" alt="Pizza de Queso">
+      <h3>Pizza de Queso</h3>
+      <p>Precio: 180 CUP</p>
+      <input type="number" min="1" value="1" id="qty-pizza">
+      <button onclick="addToCart('Pizza de Queso', 180, 'qty-pizza')">Agregar</button>
+    </div>
+    <div class="product">
+      <img src="img/batido.jpeg" alt="Batido de Mango">
+      <h3>Batido de Mango</h3>
+      <p>Precio: 60 CUP</p>
+      <input type="number" min="1" value="1" id="qty-batido">
+      <button onclick="addToCart('Batido de Mango', 60, 'qty-batido')">Agregar</button>
+    </div>
+    <div class="product">
+      <img src="img/cerveza.jpeg" alt="Cerveza">
+      <h3>Cerveza</h3>
+      <p>Precio: 200 CUP</p>
+      <input type="number" min="1" value="1" id="qty-cerveza">
+      <button onclick="addToCart('Cerveza', 200, 'qty-cerveza')">Agregar</button>
+    </div>
+  </div>
+
+  <div class="section cart" id="cart">
+    <h3>🛒 Tu pedido</h3>
+    <ul id="cart-list"></ul>
+    <p><strong>Total:</strong> <span id="cart-total">0</span> CUP</p>
+
+    <div style="text-align:center; margin-top: 20px;">
+      <button class="boton-whatsapp" onclick="sendOrder()">
+        Pedir por WhatsApp
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+             alt="WhatsApp logo">
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ubicacion">
+  <h2>📍 Ubicación</h2>
+  <p style="text-align:center;">
+    Calle San Pedro #218 a altos,<br>
+    entre San Miguel y Nazareno,<br>
+    Santa Clara, Villa Clara, Cuba
+  </p>
+  <div class="mapa">
+    <iframe
+      src="https://www.google.com/maps?q=22.401355,-79.970718&z=17&output=embed"
+      allowfullscreen="" loading="lazy">
+    </iframe>
+  </div>
+  <div style="text-align:center; margin-top: 20px;">
+    <a href="https://www.google.com/maps/dir/?api=1&destination=22.401355,-79.970718"
+       target="_blank" class="boton-mapas">
+      Cómo llegar 🚶‍♂️
+    </a>
+  </div>
+</section>
+
+<section class="section" id="galeria">
+  <h2>📸 Nuestra Galería</h2>
+  <div class="gallery">
+    <a href="#img1"><img src="img/pizza.jpeg" alt="Pizza"></a>
+    <a href="#img2"><img src="img/batido.jpeg" alt="Batido"></a>
+    <a href="#img3"><img src="img/cerveza.jpeg" alt="Cerveza"></a>
+  </div>
+
+  <div id="img1" class="lightbox"><a href="#"><img src="img/pizza.jpeg" alt=""></a></div>
+  <div id="img2" class="lightbox"><a href="#"><img src="img/batido.jpeg" alt=""></a></div>
+  <div id="img3" class="lightbox"><a href="#"><img src="img/cerveza.jpeg" alt=""></a></div>
+</section>
+
+<footer>
+  © 2025 El Balcón de Ely – Todos los derechos reservados.
+</footer>
+
+<script>
+  let cart = [];
+
+  function addToCart(nombre, precio, id) {
+    let cantidad =[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/karames/curso-markdown-master/tree/9a65a17dd637e2be8fee24d6ea6c5558403d5487/markdown%2F100-codigo-fuente.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/SCGDtecnologiasWeb/ritmicaLaMojonera/tree/b8a15606d808952b621e0ad6608b70fde3d15046/html%2Fel_club.php?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")
