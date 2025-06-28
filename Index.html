@@ -11,21 +11,32 @@
       margin: 0; font-family: 'Montserrat', sans-serif;
       background-color: #fff8f0; color: #333;
     }
-    header {
-      background: linear-gradient(90deg, #d62828, #f77f00);
-      color: white; text-align: center; padding: 25px 15px;
-    }
-    nav a {
-      margin: 0 10px; color: white;
-      text-decoration: none; font-weight: bold;
-    }
-    .section {
-      padding: 50px 20px; max-width: 1000px; margin: auto;
-    }
+    .section { padding: 50px 20px; max-width: 1000px; margin: auto; }
     .section:nth-child(even) { background-color: #ffeccc; }
-    h2 {
-      color: #d62828;
-      margin-bottom: 25px; text-align: center;
+    h2 { color: #d62828; margin-bottom: 25px; text-align: center; }
+    header.header-con-imagen {
+      background: url("img/portada2.jpg") center center/cover no-repeat;
+      height: 280px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .header-con-imagen .overlay {
+      background-color: rgba(0,0,0,0.5);
+      color: white;
+      width: 100%; height: 100%; padding: 20px;
+    }
+    .header-con-imagen h1 {
+      font-size: 2.5em; margin: 0; padding-top: 40px;
+    }
+    .header-con-imagen nav {
+      margin-top: 10px;
+    }
+    .header-con-imagen nav a {
+      margin: 0 10px; color: #fff;
+      text-decoration: none; font-weight: bold;
     }
     .product-grid {
       display: grid;
@@ -38,7 +49,8 @@
       padding: 15px; text-align: center;
     }
     .product img {
-      width: 100%; height: 180px; object-fit: cover; border-radius: 5px;
+      width: 100%; height: 180px;
+      object-fit: cover; border-radius: 5px;
     }
     .product h3 { margin: 10px 0 5px; color: #d62828; }
     .product p { margin: 0 0 10px; }
@@ -50,73 +62,49 @@
       border: none; padding: 8px 12px;
       border-radius: 5px; cursor: pointer;
     }
-    .header-con-imagen {
-  background: url("img/portada2.jpg") center center/cover no-repeat;
-  height: 280px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.header-con-imagen .overlay {
-  background-color: rgba(0,0,0,0.5); /* Capa oscura */
-  color: white;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-}
-
-.header-con-imagen h1 {
-  font-size: 2.5em;
-  margin: 0;
-  padding-top: 40px;
-}
-
-.header-con-imagen nav {
-  margin-top: 10px;
-}
-
-.header-con-imagen nav a {
-  margin: 0 10px;
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-}
-.mapa iframe {
-  width: 100%;
-  height: 350px;
-  border: 0;
-  border-radius: 10px;
-}
-.boton-whatsapp {
-  display: inline-block;
-  background-color: #25d366; /* verde WhatsApp */
-  color: white;
-  padding: 12px 20px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
-  transition: background-color 0.3s ease;
-}
-
-.boton-whatsapp:hover {
-  background-color: #1ebe5d;
-}
-<div style="text-align:center; margin-top: 20px;">
-  <a href="https://wa.me/5354776437?text=¡Hola!%20Quisiera%20hacer%20un%20pedido"
-     target="_blank"
-     class="boton-whatsapp">
-    Pedir por WhatsApp
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-         alt="WhatsApp" style="width:20px; height:20px; vertical-align:middle; margin-left: 8px;">
-  </a>
-</div>
+    .mapa iframe {
+      width: 100%;
+      height: 350px;
+      border: 0;
+      border-radius: 10px;
+    }
+    .boton-mapas {
+      display: inline-block;
+      background-color: #d62828;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .boton-mapas:hover {
+      background-color: #a31c1c;
+    }
+    .boton-whatsapp {
+      display: inline-block;
+      background-color: #25d366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+    .boton-whatsapp:hover {
+      background-color: #1ebe5d;
+    }
+    .boton-whatsapp img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
+
 <header class="header-con-imagen">
   <div class="overlay">
     <h1>El Balcón de Ely</h1>
@@ -127,6 +115,7 @@
     </nav>
   </div>
 </header>
+
 <section class="section" id="menu">
   <h2>🍽️ Nuestro Menú</h2>
   <div class="product-grid">
@@ -157,9 +146,17 @@
     <h3>🛒 Tu pedido</h3>
     <ul id="cart-list"></ul>
     <p><strong>Total:</strong> <span id="cart-total">0</span> CUP</p>
-    <button onclick="sendOrder()">Enviar por WhatsApp</button>
+
+    <div style="text-align:center; margin-top: 20px;">
+      <button class="boton-whatsapp" onclick="sendOrder()">
+        Pedir por WhatsApp
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+             alt="WhatsApp logo">
+      </button>
+    </div>
   </div>
 </section>
+
 <section class="section" id="ubicacion">
   <h2>📍 Ubicación</h2>
   <p style="text-align:center;">
@@ -167,21 +164,20 @@
     entre San Miguel y Nazareno,<br>
     Santa Clara, Villa Clara, Cuba
   </p>
-<div class="mapa">
-  <iframe
-    src="https://www.google.com/maps?q=22.401355,-79.970718&z=17&output=embed"
-    width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy">
-  </iframe>
-</div>
-<div style="text-align:center; margin-top: 20px;">
-  <a href="https://www.google.com/maps/dir/?api=1&destination=22.401355,-79.970718"
-     target="_blank"
-     style="display: inline-block; background-color: #d62828; color: white; padding: 12px 20px;
-            border-radius: 6px; text-decoration: none; font-weight: bold;">
-    Cómo llegar 🚶‍♂️
-  </a>
-</div>
+  <div class="mapa">
+    <iframe
+      src="https://www.google.com/maps?q=22.401355,-79.970718&z=17&output=embed"
+      allowfullscreen="" loading="lazy">
+    </iframe>
+  </div>
+  <div style="text-align:center; margin-top: 20px;">
+    <a href="https://www.google.com/maps/dir/?api=1&destination=22.401355,-79.970718"
+       target="_blank" class="boton-mapas">
+      Cómo llegar 🚶‍♂️
+    </a>
+  </div>
 </section>
+
 <section class="section" id="galeria">
   <h2>📸 Nuestra Galería</h2>
   <div class="gallery">
@@ -190,7 +186,6 @@
     <a href="#img3"><img src="img/cerveza.jpeg" alt="Cerveza"></a>
   </div>
 
-  <!-- Lightbox -->
   <div id="img1" class="lightbox"><a href="#"><img src="img/pizza.jpeg" alt=""></a></div>
   <div id="img2" class="lightbox"><a href="#"><img src="img/batido.jpeg" alt=""></a></div>
   <div id="img3" class="lightbox"><a href="#"><img src="img/cerveza.jpeg" alt=""></a></div>
@@ -204,49 +199,4 @@
   let cart = [];
 
   function addToCart(nombre, precio, id) {
-    let cantidad = parseInt(document.getElementById(id).value);
-    if (!cantidad || cantidad <= 0) return;
-
-    let existente = cart.find(p => p.nombre === nombre);
-    if (existente) {
-      existente.cantidad += cantidad;
-    } else {
-      cart.push({ nombre, precio, cantidad });
-    }
-    actualizarCarrito();
-  }
-
-  function actualizarCarrito() {
-    const lista = document.getElementById("cart-list");
-    lista.innerHTML = "";
-    let total = 0;
-
-    cart.forEach(item => {
-      let li = document.createElement("li");
-      li.textContent = `${item.nombre} x${item.cantidad} – ${item.precio * item.cantidad} CUP`;
-      lista.appendChild(li);
-      total += item.precio * item.cantidad;
-    });
-
-    document.getElementById("cart-total").textContent = total;
-  }
-
-  function sendOrder() {
-    if (cart.length === 0) return alert("Tu carrito está vacío.");
-
-    let mensaje = "¡Hola! Quisiera hacer el siguiente pedido:%0A";
-    cart.forEach(item => {
-      mensaje += `- ${item.nombre} x${item.cantidad} (${item.precio * item.cantidad} CUP)%0A`;
-    });
-
-    let total = cart.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
-    mensaje += `%0ATotal: ${total} CUP`;
-
-    const numero = "5354776437"; // Reemplaza por tu número si cambia
-    const url = `https://wa.me/${numero}?text=${mensaje}`;
-    window.open(url, '_blank');
-  }
-</script>
-
-</body>
-</html>
+    let cantidad =[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/karames/curso-markdown-master/tree/9a65a17dd637e2be8fee24d6ea6c5558403d5487/markdown%2F100-codigo-fuente.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/SCGDtecnologiasWeb/ritmicaLaMojonera/tree/b8a15606d808952b621e0ad6608b70fde3d15046/html%2Fel_club.php?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")
