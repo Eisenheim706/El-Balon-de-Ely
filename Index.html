@@ -84,6 +84,12 @@
   text-decoration: none;
   font-weight: bold;
 }
+.mapa iframe {
+  width: 100%;
+  height: 350px;
+  border: 0;
+  border-radius: 10px;
+}
   </style>
 </head>
 <body>
@@ -130,15 +136,27 @@
     <button onclick="sendOrder()">Enviar por WhatsApp</button>
   </div>
 </section>
-
 <section class="section" id="ubicacion">
   <h2>📍 Ubicación</h2>
   <p style="text-align:center;">
-    Calle San Pedro #218 A Altos,<br>entre San Miguel y Nazareno,<br>Santa Clara, Villa Clara, Cuba
+    Calle San Pedro #218 a altos,<br>
+    entre San Miguel y Nazareno,<br>
+    Santa Clara, Villa Clara, Cuba
   </p>
-  <div class="map">
-    <iframe src="https://www.google.com/maps?q=Calle+San+Pedro+218,+Santa+Clara,+Cuba&output=embed" allowfullscreen loading="lazy"></iframe>
-  </div>
+<div class="mapa">
+  <iframe
+    src="https://www.google.com/maps?q=22.401355,-79.970718&z=17&output=embed"
+    width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy">
+  </iframe>
+</div>
+<div style="text-align:center; margin-top: 20px;">
+  <a href="https://www.google.com/maps/dir/?api=1&destination=22.401355,-79.970718"
+     target="_blank"
+     style="display: inline-block; background-color: #d62828; color: white; padding: 12px 20px;
+            border-radius: 6px; text-decoration: none; font-weight: bold;">
+    Cómo llegar 🚶‍♂️
+  </a>
+</div>
 </section>
 <section class="section" id="galeria">
   <h2>📸 Nuestra Galería</h2>
