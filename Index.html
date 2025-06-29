@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Balcón de Ely</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: 'Montserrat', sans-serif;
+      background-color: #fff8f0; color: #333;
+    }
+    .section { padding: 50px 20px; max-width: 1000px; margin: auto; }
+    .section:nth-child(even) { background-color: #ffeccc; }
+    h2 { color: #d62828; margin-bottom: 25px; text-align: center; }
+
+.slider-header {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.slider-header::before {
+  content: "";
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+}
+
+.slider-header.fondo1::before { background-image: url("img/portada1.jpg"); }
+.slider-header.fondo2::before { background-image: url("img/portada2.jpg"); }
+.slider-header.fondo3::before { background-image: url("img/portada3.jpg"); }
+
+.slider-overlay {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0,0,0,0.55);
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slider-overlay h1 {
+  color: #fff;
+  font-size: 2.7em;
+  text-shadow: 1px 1px 4px #000;
+}
+
+.slider-overlay nav a {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 12px;
+  text-decoration: none;
+  font-size: 1.05em;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 28px;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 5px;
+}
+
+.slider-arrow.left { left: 15px; }
+.slider-arrow.right { right: 15px; }
+
+.slider-arrow:hover {
+  background: rgba(0,0,0,0.65);
+}
+@keyframes rotarFondo {
+  0%   { background-image: url('img/portada1.jpg'); }
+  33%  { background-image: url('img/portada2.jpg'); }
+  66%  { background-image: url('img/portada3.jpg'); }
+  100% { background-image: url('img/portada1.jpg'); }
+}
+
+.header-slider .overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+    .header-con-imagen h1 {
+      font-size: 2.5em; margin: 0; padding-top: 40px;
+    }
+    .header-con-imagen nav {
+      margin-top: 10px;
+    }
+    .header-con-imagen nav a {
+      margin: 0 10px; color: #fff;
+      text-decoration: none; font-weight: bold;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: white; border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px; text-align: center;
+    }
+    .product img {
+      width: 100%; height: 180px;
+      object-fit: cover; border-radius: 5px;
+    }
+    .product h3 { margin: 10px 0 5px; color: #d62828; }
+    .product p { margin: 0 0 10px; }
+    .product input {
+      width: 60px; padding: 5px; margin: 5px 0;
+    }
+    .product button {
+      background: #d62828; color: white;
+      border: none; padding: 8px 12px;
+      border-radius: 5px; cursor: pointer;
+    }
+    .mapa iframe {
+      width: 100%;
+      height: 350px;
+      border: 0;
+      border-radius: 10px;
+    }
+    .boton-mapas {
+      display: inline-block;
+      background-color: #d62828;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .boton-mapas:hover {
+      background-color: #a31c1c;
+    }
+    .boton-whatsapp {
+      display: inline-block;
+      background-color: #25d366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+    .boton-whatsapp:hover {
+      background-color: #1ebe5d;
+    }
+    .boton-whatsapp img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    .slider-indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+}
+
+.slider-indicators span {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  opacity: 0.5;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.slider-indicators .activo {
+  opacity: 1;
+  background: #fcbf49;
+  box-shadow: 0 0 5px #222;
+}
+  </style>
+</head>
+<body>
+
+<header class="slider-header">
+  <div class="slider-overlay">
+    <h1>El Balcón de Ely</h1>
+    <nav>
+      <a href="#menu">Menú</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#galeria">Galería</a>
+    </nav>
+  </div>
+  <button class="slider-arrow left" onclick="prevSlide()">❮</button>
+  <button class="slider-arrow right" onclick="nextSlide()">❯</button>
+
+  <!-- Indicadores -->
+  <div class="slider-indicators">
+    <span onclick="mostrarFondo(1)" id="indicador1"></span>
+    <span onclick="mostrarFondo(2)" id="indicador2"></span>
+    <span onclick="mostrarFondo(3)" id="indicador3"></span>
+  </div>
+</header>
+
+<section class="section" id="menu">
+  <h2>🍽️ Nuestro Menú</h2>
+  <div class="product-grid">
+    <div class="product">
+      <img src="img/pizza.jpeg" alt="Pizza de Queso">
+      <h3>Pizza de Queso</h3>
+      <p>Precio: 180 CUP</p>
+      <input type="number" min="1" value="1" id="qty-pizza">
+      <button onclick="addToCart('Pizza de Queso', 180, 'qty-pizza')">Agregar</button>
+    </div>
+    <div class="product">
+      <img src="img/batido.jpeg" alt="Batido de Mango">
+      <h3>Batido de Mango</h3>
+      <p>Precio: 60 CUP</p>
+      <input type="number" min="1" value="1" id="qty-batido">
+      <button onclick="addToCart('Batido de Mango', 60, 'qty-batido')">Agregar</button>
+    </div>
+    <div class="product">
+      <img src="img/cerveza.jpeg" alt="Cerveza">
+      <h3>Cerveza</h3>
+      <p>Precio: 200 CUP</p>
+      <input type="number" min="1" value="1" id="qty-cerveza">
+      <button onclick="addToCart('Cerveza', 200, 'qty-cerveza')">Agregar</button>
+    </div>
+  </div>
+
+  <div class="section cart" id="cart">
+    <h3>🛒 Tu pedido</h3>
+    <ul id="cart-list"></ul>
+    <p><strong>Total:</strong> <span id="cart-total">0</span> CUP</p>
+
+    <div style="text-align:center; margin-top: 20px;">
+      <button class="boton-whatsapp" onclick="sendOrder()">
+        Pedir por WhatsApp
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+             alt="WhatsApp logo">
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ubicacion">
+  <h2>📍 Ubicación</h2>
+  <p style="text-align:center;">
+    Calle San Pedro #218 a altos,<br>
+    entre San Miguel y Nazareno,<br>
+    Santa Clara, Villa Clara, Cuba
+  </p>
+  <div class="mapa">
+    <iframe
+      src="https://www.google.com/maps?q=22.401355,-79.970718&z=17&output=embed"
+      allowfullscreen="" loading="lazy">
+    </iframe>
+  </div>
+  <div style="text-align:center; margin-top: 20px;">
+    <a href="https://www.google.com/maps/dir/?api=1&destination=22.401355,-79.970718"
+       target="_blank" class="boton-mapas">
+      Cómo llegar 🚶‍♂️
+    </a>
+  </div>
+</section>
+
+<section class="section" id="galeria">
+  <h2>📸 Nuestra Galería</h2>
+  <div class="gallery">
+    <a href="#img1"><img src="img/pizza.jpeg" alt="Pizza"></a>
+    <a href="#img2"><img src="img/batido.jpeg" alt="Batido"></a>
+    <a href="#img3"><img src="img/cerveza.jpeg" alt="Cerveza"></a>
+  </div>
+
+  <div id="img1" class="lightbox"><a href="#"><img src="img/pizza.jpeg" alt=""></a></div>
+  <div id="img2" class="lightbox"><a href="#"><img src="img/batido.jpeg" alt=""></a></div>
+  <div id="img3" class="lightbox"><a href="#"><img src="img/cerveza.jpeg" alt=""></a></div>
+</section>
+
+<footer>
+  © 2025 El Balcón de Ely – Todos los derechos reservados.
+</footer>
+<script>
+  let cart = [];
+
+  function addToCart(nombre, precio, id) {
+    let cantidad = parseInt(document.getElementById(id).value);
+    if (!cantidad || cantidad <= 0) return;
+
+    let existente = cart.find(p => p.nombre === nombre);
+    if (existente) {
+      existente.cantidad += cantidad;
+    } else {
+      cart.push({ nombre, precio, cantidad });
+    }
+    actualizarCarrito();
+  }
+
+  function actualizarCarrito() {
+    const lista = document.getElementById("cart-list");
+    lista.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+      let li = document.createElement("li");
+      li.textContent = `${item.nombre} x${item.cantidad} – ${item.precio * item.cantidad} CUP`;
+      lista.appendChild(li);
+      total += item.precio * item.cantidad;
+    });
+
+    document.getElementById("cart-total").textContent = total;
+  }
+
+  function sendOrder() {
+    if (cart.length === 0) return alert("Tu carrito está vacío.");
+
+    let mensaje = "¡Hola! Quisiera hacer el siguiente pedido:%0A";
+    cart.forEach(item => {
+      mensaje += `- ${item.nombre} x${item.cantidad} (${item.precio * item.cantidad} CUP)%0A`;
+    });
+
+    let total = cart.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+    mensaje += `%0ATotal: ${total} CUP`;
+
+    const numero = "5354776437";
+    const url = `https://wa.me/${numero}?text=${mensaje}`;
+    window.open(url, '_blank');
+  }
+
+  // 🎞️ Slider de portada con indicadores
+  const header = document.querySelector('.slider-header');
+  let fondoActual = 1;
+  const totalFondos = 3;
+
+  function mostrarFondo(n) {
+    header.classList.remove(`fondo${fondoActual}`);
+    document.getElementById(`indicador${fondoActual}`).classList.remove("activo");
+
+    fondoActual = (n > totalFondos) ? 1 : (n < 1) ? totalFondos : n;
+
+    header.classList.add(`fondo${fondoActual}`);
+    document.getElementById(`indicador${fondoActual}`).classList.add("activo");
+  }
+
+  function nextSlide() { mostrarFondo(fondoActual + 1); }
+  function prevSlide() { mostrarFondo(fondoActual - 1); }
+
+  setInterval(nextSlide, 6000);
+  mostrarFondo(1);
+</script>
+ <script>
+  const header = document.querySelector('.slider-header');
+  let fondoActual = 1;
+  const totalFondos = 3;
+
+  function mostrarFondo(n) {
+    header.classList.remove(`fondo${fondoActual}`);
+    fondoActual = (n > totalFondos) ? 1 : (n < 1) ? totalFondos : n;
+    header.classList.add(`fondo${fondoActual}`);
+  }
+
+  function nextSlide() { mostrarFondo(fondoActual + 1); }
+  function prevSlide() { mostrarFondo(fondoActual - 1); }
+
+  // Auto-rotación cada 6 segundos
+  setInterval(() => {
+    nextSlide();
+  }, 6000);
+
+  // Inicial
+  mostrarFondo(1);
+</script>
