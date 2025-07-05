@@ -508,7 +508,7 @@
     // Umbral para mostrar mensaje de negociación (CUP)
     umbralNegociacion: 15000,
     // Clave API - REEMPLAZA CON TU CLAVE REAL DE OPENROUTESERVICE
-    openRouteApiKey: "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImUyYzA5MWQ2NDliMjQxMDZiMTgzMmMxNDZmNjM4YzM3IiwiaCI6Im11cm11cjY0In0",
+    openRouteApiKey: "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImUyYzA5MWQ2NDliMjQxMDZiMTgzMmMxNDZmNjM4YzM3IiwiaCI6Im11cm11cjY0In0=",
     // Cache de rutas
     routeCache: {},
     // Tiempo máximo de espera para la API
@@ -1055,10 +1055,38 @@
   function setupEventListeners() {
     // Botón de confirmar por WhatsApp
     document.getElementById('confirmar-resumen').addEventListener('click', () => {
+      const totalProductos = carrito.reduce((t, i) => t + i.precio * i.cantidad, 0);
+    const km = document.getElementById('distancia').textContent;
+    const precioDelivery = document.getElementById('precio').textContent;
+    const total = document.getElementById('total-con-envio').textContent;
       const total = document.getElementById('resumen-total-final').textContent;
-      const mensaje = encodeURIComponent(`¡Hola! Quiero hacer un pedido. Total: ${total} CUP`);
-      window.open(`https://wa.me/5354776437?text=${mensaje}`, '_blank');
+ let mensaje = `¡Hola! Quisiera confirmar este pedido:%0A%0A`;
+    
+    // Detalle de productos con cantidad y precio unitario
+    mensaje += `*📦 DETALLE DE PRODUCTOS:*%0A`;
+    carrito.forEach(p => {
+      mensaje += `- ${p.nombre}%0A`;
+      mensaje += `  Cantidad: ${p.cantidad}%0A`;
+      mensaje += `  Precio unitario: ${p.precio} CUP%0A`;
+      mensaje += `  Subtotal: ${p.precio * p.cantidad} CUP%0A%0A`;
     });
+    
+    // Resumen de precios
+    mensaje += `*🧾 RESUMEN DE PEDIDO:*%0A`;
+    mensaje += `Productos: ${totalProductos} CUP%0A`;
+    mensaje += `Mensajería (${km} km): ${precioDelivery} CUP%0A`;
+    mensaje += `*TOTAL: ${total} CUP*%0A%0A`;
+    
+    // Ubicación de entrega
+    mensaje += `📍 *UBICACIÓN DE ENTREGA:*%0A`;
+    mensaje += `https://www.google.com/maps?q=${destinoCliente.lat},${destinoCliente.lng}%0A%0A`;
+    
+    mensaje += `¡Gracias!`;
+
+    const telefono = "5354776437";
+    const enlace = `https://wa.me/${telefono}?text=${mensaje}`;
+    window.open(enlace, '_blank');
+  });
     
     // Botones de categorías
     document.querySelectorAll('.categoria-btn').forEach(btn => {
