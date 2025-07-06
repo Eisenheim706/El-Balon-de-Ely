@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Ruta por Carretera</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        header {
+            background: linear-gradient(90deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            min-height: 600px;
+        }
+        
+        .map-container {
+            flex: 3;
+            min-width: 300px;
+            height: 500px;
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            border-left: 1px solid #e0e0e0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .coordinate-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        
+        .coordinate-item:last-child {
+            border-bottom: none;
+        }
+        
+        .coordinate-label {
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .route-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        button {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .loading {
+            background: #fff8e1;
+            color: #e67e22;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #ecf0f1;
+            background: #2c3e50;
+            margin-top: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Visualizador de Rutas por Carretera</h1>
+            <p class="subtitle">Cálculo de distancia y visualización usando OpenRouteService y OpenStreetMap</p>
+        </header>
+        
+        <div class="content">
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="card">
+                    <h2>Puntos de la Ruta</h2>
+                    
+                    <div class="coordinate-item">
+                        <span class="coordinate-label">Origen:</span>
+                        <span>Plaza de la Catedral, La Habana</span>
+                        <span>Lat: 23.1418, Lng: -82.3511</span>
+                    </div>
+                    
+                    <div class="coordinate-item">
+                        <span class="coordinate-label">Destino:</span>
+                        <span>Capitolio Nacional, La Habana</span>
+                        <span>Lat: 23.1359, Lng: -82.3587</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Información de la Ruta</h2>
+                    
+                    <div class="route-info">
+                        <div>
+                            <div class="info-value" id="distancia">-</div>
+                            <div class="info-label">DISTANCIA</div>
+                        </div>
+                        
+                        <div>
+                            <div class="info-value" id="duracion">-</div>
+                            <div class="info-label">DURACIÓN</div>
+                        </div>
+                    </div>
+                    
+                    <div id="estado" class="status loading">Preparado para calcular ruta...</div>
+                </div>
+                
+                <button id="calcular-ruta">Calcular Ruta</button>
+                
+                <div class="card">
+                    <h2>Instrucciones</h2>
+                    <p>1. Haz clic en "Calcular Ruta" para ver la ruta entre los puntos</p>
+                    <p>2. La línea roja muestra la ruta por carretera</p>
+                    <p>3. Los marcadores muestran origen (verde) y destino (rojo)</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Ejemplo de integración con OpenRouteService y OpenStreetMap | Formato de coordenadas: ORS [longitud, latitud] vs OSM [latitud, longitud]</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Configuración
+        // IMPORTANTE: Obtén tu propia API key en https://openrouteservice.org/
+        const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImUyYzA5MWQ2NDliMjQxMDZiMTgzMmMxNDZmNjM4YzM3IiwiaCI6Im11cm11cjY0In0="; 
+        
+        // Coordenadas de ejemplo (La Habana, Cuba)
+        const origen = {
+            nombre: "Plaza de la Catedral",
+            lat: 23.1418,
+            lng: -82.3511
+        };
+        
+        const destino = {
+            nombre: "Capitolio Nacional",
+            lat: 23.1359,
+            lng: -82.3587
+        };
+        
+        // Variables globales
+        let map;
+        let origenMarker;
+        let destinoMarker;
+        let routeLayer;
+        
+        // Inicializar el mapa
+        function initMap() {
+            // Crear mapa centrado en el punto medio entre origen y destino
+            const centerLat = (origen.lat + destino.lat) / 2;
+            const centerLng = (origen.lng + destino.lng) / 2;
+            
+            map = L.map('map').setView([centerLat, centerLng], 15);
+            
+            // Añadir capa base de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Añadir marcador de origen (verde)
+            origenMarker = L.marker([origen.lat, origen.lng], {
+                icon: L.divIcon({
+                    className: 'custom-icon',
+                    html: '<div style="background: #2ecc71; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">A</div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                })
+            }).addTo(map).bindPopup(`<b>ORIGEN</b><br>${origen.nombre}`);
+            
+            // Añadir marcador de destino (rojo)
+            destinoMarker = L.marker([destino.lat, destino.lng], {
+                icon: L.divIcon({
+                    className: 'custom-icon',
+                    html: '<div style="background: #e74c3c; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">B</div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                })
+            }).addTo(map).bindPopup(`<b>DESTINO</b><br>${destino.nombre}`);
+        }
+        
+        // Calcular ruta usando OpenRouteService
+        async function calcularRuta() {
+            const estado = document.getElementById('estado');
+            estado.className = 'status loading';
+            estado.textContent = "Calculando ruta...";
+            
+            document.getElementById('distancia').textContent = "-";
+            document.getElementById('duracion').textContent = "-";
+            
+            // Eliminar ruta anterior si existe
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+            }
+            
+            try {
+                // Construir cuerpo de la solicitud
+                const body = {
+                    coordinates: [
+                        [origen.lng, origen.lat],  // Formato ORS: [longitud, latitud]
+                        [destino.lng, destino.lat]
+                    ],
+                    instructions: false,
+                    geometry: true
+                };
+                
+                // Realizar solicitud a la API de OpenRouteService
+                const response = await fetch(
+                    `https://api.openrouteservice.org/v2/directions/driving-car`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': ORS_API_KEY
+                        },
+                        body: JSON.stringify(body)
+                    }
+                );
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || `Error HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Procesar resultados
+                const ruta = data.routes[0];
+                const distanciaKm = (ruta.summary.distance / 1000).toFixed(2);
+                const duracionMin = Math.round(ruta.summary.duration / 60);
+                
+                // Actualizar UI
+                document.getElementById('distancia').textContent = `${distanciaKm}`;
+                document.getElementById('duracion').textContent = `${duracionMin}`;
+                
+                estado.className = 'status success';
+                estado.textContent = "¡Ruta calculada con éxito!";
+                
+                // Dibujar ruta en el mapa
+                dibujarRutaEnMapa(ruta.geometry.coordinates);
+                
+            } catch (error) {
+                console.error('Error calculando ruta:', error);
+                estado.className = 'status error';
+                estado.textContent = `Error: ${error.message || 'Problema con el servicio'}`;
+            }
+        }
+        
+        // Función para dibujar la ruta en el mapa
+        function dibujarRutaEnMapa(coordinates) {
+            // Convertir coordenadas ORS ([lng, lat]) a formato Leaflet ([lat, lng])
+            const latLngs = coordinates.map(coord => L.latLng(coord[1], coord[0]));
+            
+            // Crear capa de polilínea
+            routeLayer = L.polyline(latLngs, {
+                color: '#e74c3c',
+                weight: 6,
+                opacity: 0.8,
+                lineJoin: 'round',
+                dashArray: '10, 10'
+            }).addTo(map);
+            
+            // Añadir animación a la ruta
+            animateRoute(routeLayer);
+            
+            // Ajustar vista para mostrar toda la ruta
+            map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
+        }
+        
+        // Animación de la ruta
+        function animateRoute(layer) {
+            let i = 0;
+            const latlngs = layer.getLatLngs();
+            const interval = 100; // ms
+            
+            // Crear marcador animado
+            const movingMarker = L.marker(latlngs[0], {
+                icon: L.divIcon({
+                    className: 'moving-marker',
+                    html: '<div style="background: #3498db; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px rgba(52, 152, 219, 0.8);"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                })
+            }).addTo(map);
+            
+            const timer = setInterval(() => {
+                if (i < latlngs.length) {
+                    movingMarker.setLatLng(latlngs[i]);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    map.removeLayer(movingMarker);
+                }
+            }, interval);
+        }
+        
+        // Inicializar cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            
+            // Configurar evento del botón
+            document.getElementById('calcular-ruta').addEventListener('click', calcularRuta);
+            
+            // Calcular ruta automáticamente después de 1 segundo
+            setTimeout(calcularRuta, 1000);
+        });
+    </script>
+</body>
+</html>
