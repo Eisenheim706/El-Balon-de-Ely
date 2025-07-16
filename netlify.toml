@@ -1,0 +1,25 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  # Variables de entorno (se configurarán en el panel de Netlify)
+  OPENROUTE_API_KEY = "tu_api_key_de_openrouteservice"
+  FIREBASE_API_KEY = "tu_api_key_de_firebase"
+  FIREBASE_AUTH_DOMAIN = "tu-proyecto.firebaseapp.com"
+  FIREBASE_PROJECT_ID = "tu-proyecto"
+  FIREBASE_STORAGE_BUCKET = "tu-proyecto.appspot.com"
+  FIREBASE_MESSAGING_SENDER_ID = "1234567890"
+  FIREBASE_APP_ID = "1:1234567890:web:abcdef123456"
+
+[dev]
+  framework = "#custom"
+  command = "echo 'No hay comando de desarrollo'"
+  targetPort = 8888
+  autoLaunch = true
+
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
