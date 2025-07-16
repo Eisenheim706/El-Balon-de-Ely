@@ -3,7 +3,6 @@
   functions = "netlify/functions"
 
 [build.environment]
-  # Variables de entorno (se configurarán en el panel de Netlify)
   OPENROUTE_API_KEY = "tu_api_key_de_openrouteservice"
   FIREBASE_API_KEY = "tu_api_key_de_firebase"
   FIREBASE_AUTH_DOMAIN = "tu-proyecto.firebaseapp.com"
