@@ -3,22 +3,16 @@
   functions = "netlify/functions"
 
 [build.environment]
-  OPENROUTE_API_KEY = "tu_api_key_de_openrouteservice"
-  FIREBASE_API_KEY = "tu_api_key_de_firebase"
-  FIREBASE_AUTH_DOMAIN = "tu-proyecto.firebaseapp.com"
-  FIREBASE_PROJECT_ID = "tu-proyecto"
-  FIREBASE_STORAGE_BUCKET = "tu-proyecto.appspot.com"
-  FIREBASE_MESSAGING_SENDER_ID = "1234567890"
-  FIREBASE_APP_ID = "1:1234567890:web:abcdef123456"
-
-[dev]
-  framework = "#custom"
-  command = "echo 'No hay comando de desarrollo'"
-  targetPort = 8888
-  autoLaunch = true
+  OPENROUTE_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjMyMjE4MWZhN2EyMzRjOTY5MjRjOTYyMTNjN2I1YTE0IiwiaCI6Im11cm11cjY0In0="
+  FIREBASE_API_KEY = "AIzaSyCboNnTkG1PxSdOcXmzY8usWAB5cg2Hcso"
+  FIREBASE_AUTH_DOMAIN = "atupuerta-788b4.firebaseapp.com"
+  FIREBASE_PROJECT_ID = "atupuerta-788b4"
+  FIREBASE_STORAGE_BUCKET = "atupuerta-788b4.firebasestorage.app"
+  FIREBASE_MESSAGING_SENDER_ID = "262332454801"
+  FIREBASE_APP_ID = "1:262332454801:web:6695fe80b8e45611e7ec30"
 
 [[redirects]]
   from = "/.netlify/functions/*"
   to = "/.netlify/functions/:splat"
   status = 200
-  force = true
+  force = true 
